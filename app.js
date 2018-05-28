@@ -1,10 +1,10 @@
 const tlcfg = {
             token: '"' + process.env.EG_TRANS_TOKEN + '"',
-            prefix = "!eg",
-            ownner =['"' + process.env.OWNER1 + '"'],
-            playingStatus = '"' + process.env.PLAYING_STATUS + '"',
-            tsChannelsEnabled = true
-          }
+            prefix : "!eg",
+            ownner :['"' + process.env.OWNER1 + '"'],
+            playingStatus : '"' + process.env.PLAYING_STATUS + '"',
+            tsChannelsEnabled : true
+          };
 
           console.log("temp token : " + tlcfg.token);
 if( !tlcfg.token.startsWith("Bot" ) )
