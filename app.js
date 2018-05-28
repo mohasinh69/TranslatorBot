@@ -297,7 +297,7 @@ bot.on("messageCreate", async msg => {
         },
         {
           name: "More Information",
-          value: ""
+          value: "We will soon update this"
         }
       ]
     }})
