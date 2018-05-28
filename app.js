@@ -297,7 +297,7 @@ bot.on("messageCreate", async msg => {
         },
         {
           name: "More Information",
-          value: "Want to host an instance of translate? Support our development? Report bugs and suggest new features or changes? Join our Discord server! https://discord.gg/5avnG8a"
+          value: ""
         }
       ]
     }})
