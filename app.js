@@ -1,12 +1,12 @@
 const tlcfg = {
-            token: '"' + process.env.EG_TRANS_TOKEN + '"',
+            token: process.env.EG_TRANS_TOKEN,
             prefix : "!eg",
             ownner :['"' + process.env.OWNER1 + '"'],
             playingStatus : '"' + process.env.PLAYING_STATUS + '"',
             tsChannelsEnabled : true
           };
 
-          console.log("temp token : " + tlcfg.token);
+console.log("temp token : " + tlcfg.token);
 if( !tlcfg.token.startsWith("Bot" ) )
   console.log("temp token : " + tlcfg.token);
 //const tlcfg = require("./config.json")
