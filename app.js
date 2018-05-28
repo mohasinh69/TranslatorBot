@@ -1,4 +1,4 @@
-const tlcfg = require("./config.json")
+const tlcfg = require("./config.js")
 const fs = require("fs")
 const Eris = require("eris")
 const OS = require("os")
