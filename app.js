@@ -1,4 +1,11 @@
-const tlcfg = require("./config.json")
+const tlcfg = {
+            token: process.env.EG_TRANS_TOKEN,
+            prefix : "!eg",
+            ownner :[process.env.OWNER1],
+            playingStatus : process.env.PLAYING_STATUS ,
+            tsChannelsEnabled : true
+          };
+
 const fs = require("fs")
 const Eris = require("eris")
 const OS = require("os")
