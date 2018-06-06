@@ -29,6 +29,9 @@ bot.on("ready", () => {
   console.log(`bot ONLINE. ${bot.guilds.size} guilds, serving ${userCount} users.`)
   console.log(`Took ${startTime} seconds to start.`)
   console.log(`Owners: ${devs}`)
+  if( 1 == DEBUG )
+    console.log("Admin roles : " + ALLOWED_ROLES);
+
   tlcfg.tsChannelsEnabled ? console.log("ts-channels are enabled") : console.log("ts-channels are disabled")
   guildSize = bot.guilds.size
   shardSize = bot.shards.size
@@ -304,7 +307,6 @@ bot.on("messageCreate", async msg => {
   }
 
   async function invite() {
-    
     let adminRole = [];
     msg.channel.guild.roles.forEach(function(value,key){
         if( ALLOWED_ROLES.indexOf(value.name ) != -1)
@@ -317,7 +319,6 @@ bot.on("messageCreate", async msg => {
     } else {
       msg.channel.createMessage(`This command is reserved for user with role - \n\t` + ALLOWED_ROLES.join("\n\t"));
     }
-
   }
 
   async function ping() {
