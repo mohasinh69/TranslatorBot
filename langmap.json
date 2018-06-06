@@ -80,7 +80,7 @@
     "flag": "nl"
   },
   "en": {
-    "alias": ["en", "english","um"],
+    "alias": ["en", "english","um", "us"],
     "flag": "um"
   },
   "eo": {
