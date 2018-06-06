@@ -1,11 +1,13 @@
 const tlcfg = {
   token: process.env.EG_TRANS_TOKEN,
-  prefix : "!eg",
-  ownner :[process.env.OWNER1],
+  prefix : process.env.PREFIX,
+  ownner : process.env.OWNERS,
   playingStatus : process.env.PLAYING_STATUS ,
   tsChannelsEnabled : true
 };
 
+const ALLOWED_ROLES = process.env.ALLOWED_ROLES;
+console.log(ALLOWED_ROLES);
 const DEBUG = process.env.DEBUG;
 const fs = require("fs")
 const Eris = require("eris")
@@ -303,7 +305,20 @@ bot.on("messageCreate", async msg => {
   }
 
   async function invite() {
-    msg.channel.createMessage(`https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=2146958591`)
+    
+    let adminRole = [];
+    msg.channel.guild.roles.forEach(function(value,key){
+        if( ALLOWED_ROLES.indexOf(value.name ) != -1)
+        {
+          adminRole.push(value.id);
+        }
+    });
+    if(msg.member.roles.some(r=>adminRole.includes(r)) ) {
+      msg.channel.createMessage(`https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=2146958591`)
+    } else {
+      msg.channel.createMessage(`This command is reserved for user with role - \n\t` + ALLOWED_ROLES.join("\n\t"));
+    }
+
   }
 
   async function ping() {
