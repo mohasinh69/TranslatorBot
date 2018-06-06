@@ -45,7 +45,7 @@ bot.on("messageReactionAdd", async (msg, emoji, userid) => {
 
   var getMessageOfReaction = bot.getMessage(msg.channel.id, msg.id);
   var command = "";
-  var flagEmojis = emojiFlags.data;
+  
 
   getMessageOfReaction.then((response) => {
     var flagCommand = emoji.name.toString();
@@ -54,7 +54,8 @@ bot.on("messageReactionAdd", async (msg, emoji, userid) => {
     var flagsJson = require('./flags.json');
     let LangMap = new Map()
     let thingToTranslate = response.content;
-
+    var flagEmojis = emojiFlags.data;
+    
     if( 1 == DEBUG )
       console.log("thingToTranslate :: " + thingToTranslate);
 
