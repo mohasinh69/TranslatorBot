@@ -7,7 +7,7 @@ const tlcfg = {
 };
 
 const ALLOWED_ROLES = process.env.ALLOWED_ROLES;
-console.log(ALLOWED_ROLES);
+
 const DEBUG = process.env.DEBUG;
 const fs = require("fs")
 const Eris = require("eris")
@@ -30,6 +30,7 @@ bot.on("ready", () => {
   console.log(`bot ONLINE. ${bot.guilds.size} guilds, serving ${userCount} users.`)
   console.log(`Took ${startTime} seconds to start.`)
   console.log(`Owners: ${devs}`)
+  console.log(ALLOWED_ROLES);
   tlcfg.tsChannelsEnabled ? console.log("ts-channels are enabled") : console.log("ts-channels are disabled")
   guildSize = bot.guilds.size
   shardSize = bot.shards.size
@@ -313,6 +314,7 @@ bot.on("messageCreate", async msg => {
           adminRole.push(value.id);
         }
     });
+
     if(msg.member.roles.some(r=>adminRole.includes(r)) ) {
       msg.channel.createMessage(`https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=2146958591`)
     } else {
