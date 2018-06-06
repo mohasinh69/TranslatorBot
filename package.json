@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/TannerReynolds/Translation-Bot#readme",
   "dependencies": {
+    "emoji-flags": "^1.2.0",
     "eris": "^0.7.2",
     "flipout": "^1.0.0",
     "gizoogle": "0.0.6",

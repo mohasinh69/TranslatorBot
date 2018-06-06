@@ -12,7 +12,7 @@
     "flag": "za"
   },
   "sq": {
-    "alias": ["sq", "albanian"],
+    "alias": ["sq", "albanian","al"],
     "flag": "al"
   },
   "hy": {
@@ -20,7 +20,7 @@
     "flag": "am"
   },
   "eu": {
-    "alias": ["eu", "basque"],
+    "alias": ["eu", "basque","fr"],
     "flag": "fr"
   },
   "be": {
@@ -80,7 +80,7 @@
     "flag": "nl"
   },
   "en": {
-    "alias": ["en", "english"],
+    "alias": ["en", "english","um", "us"],
     "flag": "um"
   },
   "eo": {
@@ -144,7 +144,7 @@
     "flag": "il"
   },
   "hi": {
-    "alias": ["hi", "hindi"],
+    "alias": ["hi", "hindi", "in"],
     "flag": "in"
   },
   "hmn": {
@@ -304,11 +304,11 @@
     "flag": "gb"
   },
   "sr": {
-    "alias": ["sr", "serbian"],
+    "alias": ["sr", "serbian","rs"],
     "flag": "rs"
   },
   "st": {
-    "alias": ["st", "sesotho"],
+    "alias": ["st", "sesotho","ls"],
     "flag": "ls"
   },
   "sn": {
@@ -336,7 +336,7 @@
     "flag": "so"
   },
   "es": {
-    "alias": ["es", "spanish"],
+    "alias": ["es", "spanish","es"],
     "flag": "es"
   },
   "su": {
@@ -376,7 +376,7 @@
     "flag": "ua"
   },
   "ur": {
-    "alias": ["ur", "urdu"],
+    "alias": ["ur", "urdu","pk"],
     "flag": "pk"
   },
   "uz": {
