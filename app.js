@@ -308,17 +308,19 @@ bot.on("messageCreate", async msg => {
 
   async function invite() {
     let adminRole = [];
-    msg.channel.guild.roles.forEach(function(value,key){
-        if( ALLOWED_ROLES.indexOf(value.name ) != -1)
-        {
-          adminRole.push(value.id);
-        }
-    });
-    if(msg.member.roles.some(r=>adminRole.includes(r)) ) {
-      msg.channel.createMessage(`https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=2146958591`)
-    } else {
-      msg.channel.createMessage(`This command is reserved for user with role - \n\t` + ALLOWED_ROLES.join("\n\t"));
-    }
+    msg.channel.createMessage(`https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=2146958591`)
+
+    // msg.channel.guild.roles.forEach(function(value,key){
+    //     if( ALLOWED_ROLES.indexOf(value.name ) != -1)
+    //     {
+    //       adminRole.push(value.id);
+    //     }
+    // });
+    // if(msg.member.roles.some(r=>adminRole.includes(r)) ) {
+    //   msg.channel.createMessage(`https://discordapp.com/oauth2/authorize?client_id=${bot.user.id}&scope=bot&permissions=2146958591`)
+    // } else {
+    //   msg.channel.createMessage(`This command is reserved for user with role - \n\t` + ALLOWED_ROLES);
+    // }
   }
 
   async function ping() {
