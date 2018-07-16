@@ -1,10 +1,18 @@
-const tlcfg = {
-  token: process.env.EG_TRANS_TOKEN,
-  prefix : process.env.PREFIX,
-  owner : [process.env.OWNER1],
-  playingStatus : process.env.PLAYING_STATUS ,
-  tsChannelsEnabled : true
-};
+// const tlcfg = {
+//   token: process.env.EG_TRANS_TOKEN,
+//   prefix : process.env.PREFIX,
+//   owner : [process.env.OWNER1],
+//   playingStatus : process.env.PLAYING_STATUS ,
+//   tsChannelsEnabled : true
+// };
+const tlcfg ={
+    "token": "NDU4MTM3OTQ1MzE3MDQ4MzIw.DgjRug.y5nhkWP4QcB_jXpzSwVxVOjQzOE",
+    "prefix": "!eg",
+    "owner": ["375213757561044992"],
+    "playingStatus": "Translating For EG",
+    "tsChannelsEnabled": true 
+}
+
 
 const ALLOWED_ROLES = process.env.ALLOWED_ROLES;
 const DEBUG = process.env.DEBUG;
@@ -258,9 +266,11 @@ bot.on("messageCreate", async msg => {
       if (string == "" || string == null || string == undefined) return;
       if (targetChannel !== sourceChannel) {
         translate(string, { to: lang }).then(res => {
+          res.text.replace("<@ ", "<@");
           if (res.text.length > 200) {
             bot.createMessage(targetChannel, `**${msg.author.username}#${msg.author.discriminator}**: ${res.text}`);
           } else {
+            
             bot.createMessage(targetChannel, {
               embed: {
                 color: 0xFFFFFF, description: `${flag} ${res.text}`, author: { name: `${msg.author.username}#${msg.author.discriminator}`, icon_url: msg.author.avatarURL ? msg.author.avatarURL : msg.author.defaultAvatarURL }
@@ -527,7 +537,12 @@ bot.on("messageCreate", async msg => {
       var guild;
       console.log(guildList);
         try {
-            guildList.forEach(guild => guild.defaultChannel.send(stringArgs));
+          for( guild in guildList )
+          {
+            guild.defaultChannel.send(stringArgs);
+            console.log("Could sent message to " + guild.name);
+          }
+
         } catch (err) {
             console.log("Could not send message to " + guild.name);
         }
