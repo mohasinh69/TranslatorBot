@@ -1,7 +1,7 @@
 const tlcfg = {
   token: process.env.EG_TRANS_TOKEN,
   prefix : process.env.PREFIX,
-  owner : [process.env.OWNER1],
+  owner : [process.env.OWNER1,process.env.OWNER2],
   playingStatus : process.env.PLAYING_STATUS ,
   tsChannelsEnabled : true
 };
