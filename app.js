@@ -1,17 +1,10 @@
-// const tlcfg = {
-//   token: process.env.EG_TRANS_TOKEN,
-//   prefix : process.env.PREFIX,
-//   owner : [process.env.OWNER1],
-//   playingStatus : process.env.PLAYING_STATUS ,
-//   tsChannelsEnabled : true
-// };
-const tlcfg ={
-    "token": "NDU4MTM3OTQ1MzE3MDQ4MzIw.DgjRug.y5nhkWP4QcB_jXpzSwVxVOjQzOE",
-    "prefix": "!eg",
-    "owner": ["375213757561044992"],
-    "playingStatus": "Translating For EG",
-    "tsChannelsEnabled": true 
-}
+const tlcfg = {
+  token: process.env.EG_TRANS_TOKEN,
+  prefix : process.env.PREFIX,
+  owner : [process.env.OWNER1],
+  playingStatus : process.env.PLAYING_STATUS ,
+  tsChannelsEnabled : true
+};
 
 
 const ALLOWED_ROLES = process.env.ALLOWED_ROLES;
