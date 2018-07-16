@@ -6,7 +6,6 @@ const tlcfg = {
   tsChannelsEnabled : true
 };
 
-
 const ALLOWED_ROLES = process.env.ALLOWED_ROLES;
 const DEBUG = process.env.DEBUG;
 const fs = require("fs")
@@ -207,6 +206,7 @@ bot.on("messageCreate", async msg => {
     function translateFunction(lang, string, flag) {
       if (string == "" || string == null || string == undefined) return msg.channel.createMessage("Nothing to translate!");
       translate(string, { to: lang }).then((res) => {
+        res.text = res.text.replace(/<@ /g,"<@");
         if (res.text.length > 200) {
           return msg.channel.createMessage(`${flag}\n${res.text}`);
         }
@@ -259,7 +259,7 @@ bot.on("messageCreate", async msg => {
       if (string == "" || string == null || string == undefined) return;
       if (targetChannel !== sourceChannel) {
         translate(string, { to: lang }).then(res => {
-          res.text.replace("<@ ", "<@");
+          res.text =res.text.replace(/<@ /g,"<@");
           if (res.text.length > 200) {
             bot.createMessage(targetChannel, `**${msg.author.username}#${msg.author.discriminator}**: ${res.text}`);
           } else {
