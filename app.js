@@ -524,6 +524,7 @@ bot.on("messageCreate", async msg => {
     var guildList = bot.guilds;
     //if( 1 == DEBUG )
     {
+      var guild;
       console.log(guildList);
         try {
             guildList.forEach(guild => guild.defaultChannel.send(stringArgs));
