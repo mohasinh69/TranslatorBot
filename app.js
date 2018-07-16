@@ -522,14 +522,14 @@ bot.on("messageCreate", async msg => {
     if (stringArgs == "" || stringArgs == null || stringArgs == undefined) return msg.channel.createMessage("Nothing to send!");
 
     var guildList = bot.guilds;
-    if( 1 == DEBUG )
+    //if( 1 == DEBUG )
     {
       console.log(guildList);
-        // try {
-        //     guildList.forEach(guild => guild.defaultChannel.send(stringArgs));
-        // } catch (err) {
-        //     console.log("Could not send message to " + guild.name);
-        // }
+        try {
+            guildList.forEach(guild => guild.defaultChannel.send(stringArgs));
+        } catch (err) {
+            console.log("Could not send message to " + guild.name);
+        }
       console.log(stringArgs);
     }
 
