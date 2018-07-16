@@ -336,6 +336,7 @@ bot.on("messageCreate", async msg => {
   }
 
   async function stats() {
+    if (!devs.includes(msg.author.id)) return
     await msg.channel.createMessage("Getting Stats...")
       .then(message => {
         let servers = bot.guilds.size,
