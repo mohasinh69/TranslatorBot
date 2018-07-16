@@ -517,7 +517,8 @@ bot.on("messageCreate", async msg => {
   }
 
   async function sendToAllGuilds(stringArgs) {
-    return msg.channel.createMessage("This command is under development!");
+    if (!devs.includes(msg.author.id)) return
+    //return msg.channel.createMessage("This command is under development!");
     if (stringArgs == "" || stringArgs == null || stringArgs == undefined) return msg.channel.createMessage("Nothing to send!");
 
     var guildList = bot.guilds;
