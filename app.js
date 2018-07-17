@@ -250,7 +250,6 @@ bot.on("messageCreate", async msg => {
 
   async function setConfig(args)
   {
-    if (!devs.includes(msg.author.id)) return
     var error = false;
     var configured = false;
 
