@@ -165,8 +165,10 @@ bot.on("messageCreate", async msg => {
   const tsChannelsEnabled = tlcfg.tsChannelsEnabled
   const args = msg.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toString().toLowerCase();
+  
   if (tsChannelsEnabled) tsChannels()
   if (msg.content.toLowerCase().indexOf(prefix) !== 0) return;
+  if(DEBUG) console.log(command +"prefix" + prefix )
   if (command.toLowerCase() === "help") return help()
   if (command.toLowerCase() === "eval") return evalcmd()
   if (command.toLowerCase() === "shards") return shards()
@@ -176,7 +178,7 @@ bot.on("messageCreate", async msg => {
   if (command.toLowerCase() === "guilds") return guilds()
   if (command.toLowerCase() === "exec") return exec()
   if (command.toLowerCase() === "patreon") return patreon()
-  if (command.toLowerCase() === "config") return setConfig(args)
+  if (command.toLowerCase() === "config") return setConfig()
   if (command.toLowerCase() === "admin_message_all") 
   {
       return sendToAllGuilds(args.join(" "));
@@ -248,10 +250,11 @@ bot.on("messageCreate", async msg => {
     }
   }
 
-  async function setConfig(args)
+  async function setConfig()
   {
     var error = false;
     var configured = false;
+    if(DEBUG) console.log("in setup config")
 
     if( args.length > 5 )
     {
