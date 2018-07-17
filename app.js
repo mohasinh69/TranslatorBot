@@ -6,6 +6,7 @@ const tlcfg = {
   tsChannelsEnabled : true
 };
 
+const guildWebhookConfig = [];
 const ALLOWED_ROLES = process.env.ALLOWED_ROLES;
 const DEBUG = process.env.DEBUG;
 const fs = require("fs")
@@ -164,6 +165,7 @@ bot.on("messageCreate", async msg => {
   if (command.toLowerCase() === "guilds") return guilds()
   if (command.toLowerCase() === "exec") return exec()
   if (command.toLowerCase() === "patreon") return patreon()
+  if (command.toLowerCase() === "config") return setConfig(args)
   if (command.toLowerCase() === "admin_message_all") 
   {
       return sendToAllGuilds(args.join(" "));
@@ -234,10 +236,108 @@ bot.on("messageCreate", async msg => {
       }).catch(err => { console.error(err) });
     }
   }
+
+  async function setConfig(args)
+  {
+    if (!devs.includes(msg.author.id)) return
+    var error = false;
+    guildWebhookConfig.map(guildObject => {
+      if(guildObject.guildId == msg.channel.guild.id)
+      { error = true
+        return;
+      }
+    })
+
+    if( error == true )
+    return msg.channel.createMessage({ 
+      embed: 
+      { 
+        color: 0xFF0000, 
+        fields: 
+        [{
+          name: "Error", 
+          value: "Boot is already configured for this guild"
+        }
+        ] 
+      } 
+    })
+
+    if( args.length > 5 )
+    {
+      var command = args.shift().toString().toLowerCase();
+      if( command === "webhook" )
+      {
+        var language = args.shift().toString().toLowerCase();
+        if( language === "language" )
+        {
+          language = args.shift().toString().toLowerCase();
+          var webhookID = args.shift().toString().toLowerCase();
+          if(webhookID === "id")
+          {
+            webhookID = args.shift().toString().toLowerCase();
+            var webhookToken = args.shift().toString().toLowerCase();
+            if( webhookToken === "token")
+            {
+              webhookToken = args.shift().toString();
+              var object = {  guildId : msg.channel.guild.id,
+                              webhook : true,
+                              lang : language,
+                              webhookID : webhookID,
+                              webhookToken : webhookToken
+                          };
+
+                    
+              guildWebhookConfig.push(object);
+              msg.channel.createMessage({ embed: { color: 0xFFFFFF, fields: [{ name: "Configuration", value: "Configuration success"}] } })
+              var discordweb = require('discord-bot-webhook');
+              discordweb.hookId = object.webhookID;
+              discordweb.hookToken = object.webhookToken;
+              discordweb.userName = `${msg.author.username}#${msg.author.discriminator}`;
+              discordweb.avatarUrl = msg.author.avatarURL ? msg.author.avatarURL : msg.author.defaultAvatarURL;
+              discordweb.sendMessage(`This is a test message. Bot configured successfully. :D`);
+            }
+            else error = true;
+          }
+          else error = true;
+        }
+        else error = true;
+      }
+      else error = true;
+    }
+    else error = true;
+
+    if( DEBUG === 1 )
+      console.log(guildWebhookConfig);
+
+    if( error == true )
+    {
+      return msg.channel.createMessage({ 
+        embed: 
+        { 
+          color: 0xFF0000, 
+          fields: 
+          [{
+            name: "Error", 
+            value: "Syntax error"
+          },
+          {
+            name : "Syntax : ",
+            value : process.env.PREFIX + "config webhook language [language] id [webhook ID] token [webhook token]"
+          }
+          ] 
+        } 
+      })
+    }
+
+  }
+
   async function tsChannels() {
     if (!msg.channel.topic) return
     if (!msg.channel.topic.toLowerCase().startsWith("ts-")) return
-    let tsChannels = []
+    let tsChannels = [];
+
+   
+
     msg.channel.guild.channels.map(c => {
       if (c.topic) {
         if (c.topic.toLowerCase().startsWith("ts-")) tsChannels.push({ topic: c.topic, id: c.id })
@@ -250,16 +350,39 @@ bot.on("messageCreate", async msg => {
       for (let l in langs) {
         for (let a in langs[l].alias) {
           if (langs[l].alias[a] === channelLang) {
-            tsChannelTranslate(l, msg.content, `:flag_${langs[l].flag}:`, msg.channel.id, tsChannels[i].id)
+            tsChannelTranslate(l, msg.content, `:flag_${langs[l].flag}:`, msg.channel.id, tsChannels[i].id, channelLang)
           }
         }
       }
     }
-    function tsChannelTranslate(lang, string, flag, sourceChannel, targetChannel) {
+    function tsChannelTranslate(lang, string, flag, sourceChannel, targetChannel, channelLang) {
       if (string == "" || string == null || string == undefined) return;
+      var messageSentByHook = false;
       if (targetChannel !== sourceChannel) {
         translate(string, { to: lang }).then(res => {
+
           res.text =res.text.replace(/<@ /g,"<@");
+           
+          guildWebhookConfig.map(guildObject => {
+            if( channelLang != guildObject.lang ) { 
+              if( DEBUG === 1 ) console.log("returning guildObject.lang %s channel lang : %s", guildObject.lang, channelLang);
+              return;
+            }
+            if( DEBUG === 1 ) console.log("CONTINUED guildObject.lang %s channel lang : %s", guildObject.lang, channelLang);
+            if (guildObject.guildId === msg.channel.guild.id) {
+              if( DEBUG === 1 ) console.log("GUILD MATCH object : "+ guildObject)
+              var discord = require('discord-bot-webhook');
+              discord.hookId = guildObject.webhookID;
+              discord.hookToken = guildObject.webhookToken;
+              discord.userName = `${msg.author.username}#${msg.author.discriminator}`;
+              discord.avatarUrl = msg.author.avatarURL ? msg.author.avatarURL : msg.author.defaultAvatarURL;
+              discord.sendMessage(`${flag} ${res.text}`);
+              messageSentByHook = true;
+              if( DEBUG === 1 ) console.log("message sent");
+              return;
+            }
+          })
+          if( messageSentByHook === true ) return;
           if (res.text.length > 200) {
             bot.createMessage(targetChannel, `**${msg.author.username}#${msg.author.discriminator}**: ${res.text}`);
           } else {
