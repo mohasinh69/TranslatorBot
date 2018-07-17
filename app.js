@@ -1,14 +1,21 @@
-const tlcfg = {
-  token: process.env.EG_TRANS_TOKEN,
-  prefix : process.env.PREFIX,
-  owner : [process.env.OWNER1,process.env.OWNER2],
-  playingStatus : process.env.PLAYING_STATUS ,
-  tsChannelsEnabled : true
-};
+// const tlcfg = {
+//   token: process.env.EG_TRANS_TOKEN,
+//   prefix : process.env.PREFIX,
+//   owner : [process.env.OWNER1,process.env.OWNER2],
+//   playingStatus : process.env.PLAYING_STATUS ,
+//   tsChannelsEnabled : true
+// };
 
-const guildWebhookConfig = [];
+const tlcfg ={
+  "token": "NDY0MzgwODQ5NzQwMDU0NTI4.Di-BTQ.dNGtBN-Pq27jznfo8AH9d8FoalI",
+  "prefix": "##",
+  "owner": ["375213757561044992"],
+  "playingStatus": "Translating",
+  "tsChannelsEnabled": true 
+}
+
 const ALLOWED_ROLES = process.env.ALLOWED_ROLES;
-const DEBUG = process.env.DEBUG;
+const DEBUG = 1//process.env.DEBUG;
 const fs = require("fs")
 const Eris = require("eris")
 const OS = require("os")
@@ -24,6 +31,18 @@ const japanese = require("japanese")
 const devs = tlcfg.owner
 const ostb = require("os-toolbox");
 const langs = require("./langmap.json")
+
+var guildWebhookConfig;
+fs.exists("./GUILDWEBINFO.json", function(exists) {
+  if (exists) {
+    guildWebhookConfig = require("./GUILDWEBINFO.json");
+  } else {
+    guildWebhookConfig = [];
+    console.log("./GUILDWEBINFO.json: no such file");
+  }
+});
+
+
 let guildSize = null, shardSize = null, botInit = new Date();
 bot.on("ready", () => {
   let readyTime = new Date(), startTime = Math.floor( (readyTime - botInit) / 1000), userCount = bot.users.size
@@ -241,32 +260,81 @@ bot.on("messageCreate", async msg => {
   {
     if (!devs.includes(msg.author.id)) return
     var error = false;
-    guildWebhookConfig.map(guildObject => {
-      if(guildObject.guildId == msg.channel.guild.id)
-      { error = true
-        return;
-      }
-    })
-
-    if( error == true )
-    return msg.channel.createMessage({ 
-      embed: 
-      { 
-        color: 0xFF0000, 
-        fields: 
-        [{
-          name: "Error", 
-          value: "Boot is already configured for this guild"
-        }
-        ] 
-      } 
-    })
+    var configured = false;
 
     if( args.length > 5 )
     {
       var command = args.shift().toString().toLowerCase();
       if( command === "webhook" )
       {
+        var isEnabled = args.shift().toString().toLowerCase();
+
+
+        guildWebhookConfig.map(guildObject => {
+          if(guildObject.guildId == msg.channel.guild.id && isEnabled == guildObject.webhook )
+          { 
+            error = true
+            return;
+          }
+          else if( guildObject.guildId == msg.channel.guild.id && isEnabled != guildObject.webhook )
+          {
+            guildObject.webhook = (isEnabled === 'true') ? true : false;
+            configured = true;
+            console.log( "configuration chagne : " + guildObject);
+
+
+            fs.unlink(`GUILDWEBINFO.json`, async(err1)=>{
+               fs.writeFile(`GUILDWEBINFO.json`, JSON.stringify(guildWebhookConfig), async (err) => {
+                if (err) {
+                   msg.channel.createMessage("Error while processing guild information.")
+                } else {
+                  
+                  return msg.channel.createMessage({ 
+                    embed: 
+                    { 
+                      color: 0x0000FF, 
+                      fields: 
+                      [{
+                        name: "Success", 
+                        value: "Bot configured for this guild"
+                      },
+                      {
+                        name : "Status",
+                        value : (isEnabled=== 'true') ? "**ENABLED**" : "**DISABLED**"
+                      }
+                      ] 
+                    } 
+                  })
+
+                }
+              })
+            })
+
+            
+          }
+        })
+        if( configured ) return;
+        if( error == true )
+        {
+          return msg.channel.createMessage({ 
+            embed: 
+            { 
+              color: 0xFF0000, 
+              fields: 
+              [{
+                name: "Error", 
+                value: "Bot is already configured for this guild"
+              },
+              {
+                name : "Status",
+                value :  (isEnabled=== 'true')  ? "**ENABLED**" : "**DISABLED**"
+              }
+              ] 
+            } 
+          })
+        }
+
+
         var language = args.shift().toString().toLowerCase();
         if( language === "language" )
         {
@@ -280,7 +348,7 @@ bot.on("messageCreate", async msg => {
             {
               webhookToken = args.shift().toString();
               var object = {  guildId : msg.channel.guild.id,
-                              webhook : true,
+                              webhook : (isEnabled === 'true') ? true : false,
                               lang : language,
                               webhookID : webhookID,
                               webhookToken : webhookToken
@@ -295,6 +363,18 @@ bot.on("messageCreate", async msg => {
               discordweb.userName = `${msg.author.username}#${msg.author.discriminator}`;
               discordweb.avatarUrl = msg.author.avatarURL ? msg.author.avatarURL : msg.author.defaultAvatarURL;
               discordweb.sendMessage(`This is a test message. Bot configured successfully. :D`);
+              await fs.unlink(`GUILDWEBINFO.json`, async(err1)=>{
+                await fs.writeFile(`GUILDWEBINFO.json`, JSON.stringify(guildWebhookConfig), async (err) => {
+                  if (err) {
+                    console.log(err)
+                    await msg.channel.createMessage("Error while processing guild information.")
+                  } else {
+                    await msg.channel.createMessage(`Guild Info file created! `)
+                  }
+                })
+              })
+              
+
             }
             else error = true;
           }
@@ -364,12 +444,16 @@ bot.on("messageCreate", async msg => {
           res.text =res.text.replace(/<@ /g,"<@");
            
           guildWebhookConfig.map(guildObject => {
-            if( channelLang != guildObject.lang ) { 
+            if( guildObject.webhook == false ||  guildObject.webhook == "false" || channelLang != guildObject.lang) { 
               if( DEBUG === 1 ) console.log("returning guildObject.lang %s channel lang : %s", guildObject.lang, channelLang);
               return;
             }
+
             if( DEBUG === 1 ) console.log("CONTINUED guildObject.lang %s channel lang : %s", guildObject.lang, channelLang);
             if (guildObject.guildId === msg.channel.guild.id) {
+              
+              if( guildObject.webhook == false ||  guildObject.webhook == "false"  )  return;
+
               if( DEBUG === 1 ) console.log("GUILD MATCH object : "+ guildObject)
               var discord = require('discord-bot-webhook');
               discord.hookId = guildObject.webhookID;
@@ -378,6 +462,10 @@ bot.on("messageCreate", async msg => {
               discord.avatarUrl = msg.author.avatarURL ? msg.author.avatarURL : msg.author.defaultAvatarURL;
               discord.sendMessage(`${flag} ${res.text}`);
               messageSentByHook = true;
+
+
+              
+
               if( DEBUG === 1 ) console.log("message sent");
               return;
             }
