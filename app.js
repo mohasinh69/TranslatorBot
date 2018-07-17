@@ -396,7 +396,7 @@ bot.on("messageCreate", async msg => {
           },
           {
             name : "Syntax : ",
-            value : process.env.PREFIX + "config webhook language [language] id [webhook ID] token [webhook token]"
+            value : process.env.PREFIX + " config webhook [true/false] language [language] id [webhook ID] token [webhook token]"
           }
           ] 
         } 
