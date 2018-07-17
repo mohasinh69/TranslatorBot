@@ -1,21 +1,13 @@
-// const tlcfg = {
-//   token: process.env.EG_TRANS_TOKEN,
-//   prefix : process.env.PREFIX,
-//   owner : [process.env.OWNER1,process.env.OWNER2],
-//   playingStatus : process.env.PLAYING_STATUS ,
-//   tsChannelsEnabled : true
-// };
-
-const tlcfg ={
-  "token": "NDY0MzgwODQ5NzQwMDU0NTI4.Di-BTQ.dNGtBN-Pq27jznfo8AH9d8FoalI",
-  "prefix": "##",
-  "owner": ["375213757561044992"],
-  "playingStatus": "Translating",
-  "tsChannelsEnabled": true 
-}
+const tlcfg = {
+  token: process.env.EG_TRANS_TOKEN,
+  prefix : process.env.PREFIX,
+  owner : [process.env.OWNER1,process.env.OWNER2],
+  playingStatus : process.env.PLAYING_STATUS ,
+  tsChannelsEnabled : true
+};
 
 const ALLOWED_ROLES = process.env.ALLOWED_ROLES;
-const DEBUG = 1//process.env.DEBUG;
+const DEBUG = process.env.DEBUG;
 const fs = require("fs")
 const Eris = require("eris")
 const OS = require("os")
