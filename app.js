@@ -342,6 +342,7 @@ bot.on("messageCreate", async msg => {
             {
               webhookToken = args.shift().toString();
               var object = {  guildId : msg.channel.guild.id,
+                              guildname : msg.channel.guild.name,
                               webhook : (isEnabled === 'true') ? true : false,
                               lang : language,
                               webhookID : webhookID,
