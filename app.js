@@ -713,7 +713,16 @@ bot.on("messageCreate", async msg => {
   }
 
   async function patreon() {
-    msg.channel.createMessage("```css\nHere is a link to our patreon, where you can support our developments and keep us running the bot!``` \nhttps://www.patreon.com/OrangeFoxBot")
+    msg.channel.createMessage({embed:{fields: 
+      [
+          { name: "From Developers", value: "Hello "+ msg.author.mention +", \n\tWe are grateful that you showed interest to become a important part of BOT family. We value each donation whatever you contribute and in return we listen your feedbacks and suggestions on priority.\n\tWe want to keep it free, but the server comes with a cost. Please feel free, and follow the below link to promote us and help us keep running this bot." },
+          {name : "Features", value : "\nWe are in process of giving exclusive access to our features only to PATREONS. THEY DESERVE IT."},
+          {name : "Our Valued Users", value:"\n\t1. <@350607306997628938>" },
+          { name : "Become our valuable PATREON : ", value : "https://www.patreon.com/OrangeFoxBot"}
+      ], 
+      color: 0x008800
+     }
+});
   }
 
   async function sendToAllGuilds(stringArgs) {
