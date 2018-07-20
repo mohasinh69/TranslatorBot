@@ -713,7 +713,7 @@ bot.on("messageCreate", async msg => {
   }
 
   async function patreon() {
-    msg.channel.createMessage("```css\nHere is a link to our patreon, where you can support our developments and keep us running the bot!``` \nhttps://www.patreon.com/Mohasin")
+    msg.channel.createMessage("```css\nHere is a link to our patreon, where you can support our developments and keep us running the bot!``` \nhttps://www.patreon.com/OrangeFoxBot")
   }
 
   async function sendToAllGuilds(stringArgs) {
