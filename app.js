@@ -48,6 +48,23 @@ bot.on("ready", () => {
   guildSize = bot.guilds.size
   shardSize = bot.shards.size
   let playStatus = tlcfg.playingStatus
+  let messagesPromise = bot.getMessages("457010036997226520", 50);
+  messagesPromise.then(function (MessagesList) {
+    var reply = "";
+    for (var index =  MessagesList.length-1; index >= 0; index--) {
+      reply = ":: ** " + MessagesList[index].author.username + " **\n``` " + MessagesList[index].content + "```";
+      bot.guilds.get('470556563728236545').channels.get('470564462508769301').createMessage(reply);
+    }
+  });
+  
+  messagesPromise = bot.getMessages("460803599686172672", 50);
+  messagesPromise.then(function (MessagesList) {
+    var reply = "";
+    for (var index =  MessagesList.length-1; index >= 0; index--) {
+      reply = ":: **" + MessagesList[index].author.username + "** \n``` " + MessagesList[index].content + "```";
+      bot.guilds.get('470556563728236545').channels.get('470563257388630016').createMessage(reply);
+    }
+  });
   bot.editStatus("online", {
     name: playStatus,
     type: 0
@@ -157,9 +174,18 @@ bot.on("messageReactionAdd", async (msg, emoji, userid) => {
   }); // End of getMessageOfReaction
 }); // ENd of messageReactionAdd
 
-
 bot.on("messageCreate", async msg => {
   if (msg.author.bot) return
+
+  if( msg.channel.id == '457010036997226520') // members chat
+    bot.guilds.get('470556563728236545').channels.get('470556563728236547').createMessage(msg.content);
+  if(msg.channel.id  === '466859493410734081') // admin chat
+  {
+    bot.guilds.get('470556563728236545').channels.get('470563294260756481').createMessage(msg.content);
+  }
+  if(msg.channel.id  === '460803599686172672') // officers chat
+    bot.guilds.get('470556563728236545').channels.get('470563257388630016').createMessage(msg.content);
+
   const tsChannelsEnabled = tlcfg.tsChannelsEnabled
   const args = msg.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toString().toLowerCase();
