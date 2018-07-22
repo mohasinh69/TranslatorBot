@@ -176,16 +176,21 @@ bot.on("messageReactionAdd", async (msg, emoji, userid) => {
 
 bot.on("messageCreate", async msg => {
   if (msg.author.bot) return
-
+  let reply = "";
+  reply = "** " + msg.author.username + " ** :: \n``` " + msg.content + "```";
   if( msg.channel.id == '457010036997226520') // members chat
-    bot.guilds.get('470556563728236545').channels.get('470556563728236547').createMessage(msg.content);
+  {
+    bot.guilds.get('470556563728236545').channels.get('470556563728236547').createMessage(reply);
+  }
   if(msg.channel.id  === '466859493410734081') // admin chat
   {
-    bot.guilds.get('470556563728236545').channels.get('470563294260756481').createMessage(msg.content);
+    bot.guilds.get('470556563728236545').channels.get('470563294260756481').createMessage(reply);
   }
   if(msg.channel.id  === '460803599686172672') // officers chat
-    bot.guilds.get('470556563728236545').channels.get('470563257388630016').createMessage(msg.content);
-
+  {
+    bot.guilds.get('470556563728236545').channels.get('470563257388630016').createMessage(reply);
+  }
+  reply = "";
   const tsChannelsEnabled = tlcfg.tsChannelsEnabled
   const args = msg.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toString().toLowerCase();
