@@ -176,8 +176,8 @@ bot.on("messageReactionAdd", async (msg, emoji, userid) => {
 
 bot.on("messageCreate", async msg => {
   if (msg.author.bot) return
-  let reply = "";
-  reply = "** " + msg.author.username + " ** :: \n``` " + msg.content + "```";
+  var reply = "";
+  reply = "** " + msg.author.username + " ** :: \n " + msg.content + "";
   if( msg.channel.id == '457010036997226520') // members chat
   {
     bot.guilds.get('470556563728236545').channels.get('470556563728236547').createMessage(reply);
