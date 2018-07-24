@@ -48,23 +48,42 @@ bot.on("ready", () => {
   guildSize = bot.guilds.size
   shardSize = bot.shards.size
   let playStatus = tlcfg.playingStatus
-  let messagesPromise = bot.getMessages("457010036997226520", 50);
+  let messagesPromise = bot.getMessages("457010036997226520", 30);
   messagesPromise.then(function (MessagesList) {
     var reply = "";
     for (var index =  MessagesList.length-1; index >= 0; index--) {
-      reply = ":: ** " + MessagesList[index].author.username + " **\n``` " + MessagesList[index].content + "```";
+      reply = "\n\n::** " + MessagesList[index].author.username+ " ["+MessagesList[index].author.discriminator+"]" + " **\n " + MessagesList[index].content + "";
+      
       bot.guilds.get('470556563728236545').channels.get('470564462508769301').createMessage(reply);
+      (MessagesList[index].attachments).forEach(function(values,key){
+        reply = "Image :: " + values.url;
+        bot.guilds.get('470556563728236545').channels.get('470564462508769301').createMessage(reply);
+      })
     }
   });
   
-  messagesPromise = bot.getMessages("460803599686172672", 50);
+  messagesPromise = bot.getMessages("460803599686172672", 30 );
   messagesPromise.then(function (MessagesList) {
     var reply = "";
     for (var index =  MessagesList.length-1; index >= 0; index--) {
-      reply = ":: **" + MessagesList[index].author.username + "** \n``` " + MessagesList[index].content + "```";
+      reply = "\n\n::** " + MessagesList[index].author.username+ " ["+MessagesList[index].author.discriminator+"]" + " **\n " + MessagesList[index].content + "";
+     
       bot.guilds.get('470556563728236545').channels.get('470563257388630016').createMessage(reply);
+      (MessagesList[index].attachments).forEach(function(values,key){
+        reply = "Image :: " + values.url;
+        bot.guilds.get('470556563728236545').channels.get('470563257388630016').createMessage(reply);
+      })
     }
+    MessagesList.forEach(function(value,key) {
+      console.log(value.attachments);
+      (value.attachments).forEach(function(val,k) {
+        console.log(val);
+
+      });
+    });
+    
   });
+  
   bot.editStatus("online", {
     name: playStatus,
     type: 0
@@ -177,18 +196,36 @@ bot.on("messageReactionAdd", async (msg, emoji, userid) => {
 bot.on("messageCreate", async msg => {
   if (msg.author.bot) return
   var reply = "";
-  reply = "** " + msg.author.username + " ** :: \n " + msg.content + "";
+  reply = "\n\n** " + msg.author.username+ "** ["+msg.author.discriminator+"]" + "\n " + msg.content + "";
   if( msg.channel.id == '457010036997226520') // members chat
   {
     bot.guilds.get('470556563728236545').channels.get('470556563728236547').createMessage(reply);
+
+    (msg.attachments).forEach(function(values,key){
+      reply = "\nImage :: " + values.url;
+      bot.guilds.get('470556563728236545').channels.get('470556563728236547').createMessage(reply);
+    })
+
   }
   if(msg.channel.id  === '466859493410734081') // admin chat
   {
     bot.guilds.get('470556563728236545').channels.get('470563294260756481').createMessage(reply);
+
+    (msg.attachments).forEach(function(values,key){
+      reply = "\nImage :: " + values.url;
+      bot.guilds.get('470556563728236545').channels.get('470563294260756481').createMessage(reply);
+    })
+
   }
   if(msg.channel.id  === '460803599686172672') // officers chat
   {
     bot.guilds.get('470556563728236545').channels.get('470563257388630016').createMessage(reply);
+
+    (msg.attachments).forEach(function(values,key){
+      reply = "\nImage :: " + values.url;
+      bot.guilds.get('470556563728236545').channels.get('470563257388630016').createMessage(reply);
+    })
+
   }
   reply = "";
   const tsChannelsEnabled = tlcfg.tsChannelsEnabled
