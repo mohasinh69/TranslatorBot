@@ -52,7 +52,7 @@ bot.on("ready", () => {
   messagesPromise.then(function (MessagesList) {
     var reply = "";
     for (var index =  MessagesList.length-1; index >= 0; index--) {
-      reply = "\n\n::** " + MessagesList[index].author.username+ " ["+MessagesList[index].author.discriminator+"]" + " **\n " + MessagesList[index].content + "";
+      reply = "\n\n***" + MessagesList[index].author.username+ " ["+MessagesList[index].author.discriminator+"]" + " *** ::\n" + MessagesList[index].content + "\n\n";
       
       bot.guilds.get('470556563728236545').channels.get('470564462508769301').createMessage(reply);
       (MessagesList[index].attachments).forEach(function(values,key){
@@ -66,7 +66,7 @@ bot.on("ready", () => {
   messagesPromise.then(function (MessagesList) {
     var reply = "";
     for (var index =  MessagesList.length-1; index >= 0; index--) {
-      reply = "\n\n::** " + MessagesList[index].author.username+ " ["+MessagesList[index].author.discriminator+"]" + " **\n " + MessagesList[index].content + "";
+      reply = "\n\n***" + MessagesList[index].author.username+ " ["+MessagesList[index].author.discriminator+"]" + " *** ::\n" + MessagesList[index].content + "\n\n";
      
       bot.guilds.get('470556563728236545').channels.get('470563257388630016').createMessage(reply);
       (MessagesList[index].attachments).forEach(function(values,key){
@@ -74,13 +74,6 @@ bot.on("ready", () => {
         bot.guilds.get('470556563728236545').channels.get('470563257388630016').createMessage(reply);
       })
     }
-    MessagesList.forEach(function(value,key) {
-      console.log(value.attachments);
-      (value.attachments).forEach(function(val,k) {
-        console.log(val);
-
-      });
-    });
     
   });
   
@@ -196,7 +189,7 @@ bot.on("messageReactionAdd", async (msg, emoji, userid) => {
 bot.on("messageCreate", async msg => {
   if (msg.author.bot) return
   var reply = "";
-  reply = "\n\n** " + msg.author.username+ "** ["+msg.author.discriminator+"]" + "\n " + msg.content + "";
+  reply = "\n\n***" + msg.author.username+ "*** ["+msg.author.discriminator+"] :: " + "\n " + msg.content + "\n\n";
   if( msg.channel.id == '457010036997226520') // members chat
   {
     bot.guilds.get('470556563728236545').channels.get('470556563728236547').createMessage(reply);
