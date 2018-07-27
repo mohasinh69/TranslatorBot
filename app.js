@@ -76,6 +76,21 @@ bot.on("ready", () => {
     }
     
   });
+
+  messagesPromise = bot.getMessages("456863329873297412", 30 );
+  messagesPromise.then(function (MessagesList) {
+    var reply = "";
+    for (var index =  MessagesList.length-1; index >= 0; index--) {
+      reply = "\n\n***" + MessagesList[index].author.username+ " ["+MessagesList[index].author.discriminator+"]" + " *** ::\n" + MessagesList[index].content + "\n\n";
+     
+      bot.guilds.get('470556563728236545').channels.get('472253711918301214').createMessage(reply);
+      (MessagesList[index].attachments).forEach(function(values,key){
+        reply = "Image :: " + values.url;
+        bot.guilds.get('470556563728236545').channels.get('472253711918301214').createMessage(reply);
+      })
+    }
+    
+  });
   
   bot.editStatus("online", {
     name: playStatus,
@@ -220,6 +235,18 @@ bot.on("messageCreate", async msg => {
     })
 
   }
+
+  if(msg.channel.id  === '456863329873297412') // officers chat
+  {
+    bot.guilds.get('470556563728236545').channels.get('472253711918301214').createMessage(reply);
+
+    (msg.attachments).forEach(function(values,key){
+      reply = "\nImage :: " + values.url;
+      bot.guilds.get('470556563728236545').channels.get('472253711918301214').createMessage(reply);
+    })
+
+  }
+
   reply = "";
   const tsChannelsEnabled = tlcfg.tsChannelsEnabled
   const args = msg.content.slice(prefix.length).trim().split(/ +/g);
